@@ -1,0 +1,26 @@
+<div class="activity">
+  <div class="follow-method">
+    <%= link_to user_path(id: user.address),:class=>"activity__cover"  do %>
+      <%= image_tag url_for(user.profile_image), class: 'img-responsive' %>
+    <% end %>
+    <% if user.is_verified %>
+      <i class="fa fa-check-circle" aria-hidden="true"></i>
+    <% end %>
+    <div class="activity__content">
+      <p class="activity__text few-listed-para">
+        <%= user.followers.count %> followers</p>
+      <p class="follow-detail-name free-follower">@<%= user.full_name %></p>
+    </div>
+  </div>
+
+  <div class="follow-details-button">
+    <%= link_to follow_unfollow_feed_index_path(id: user.address, card: true), method: :post, remote: true, class: "follow-un-demo follow-html-#{user.address}" do %>
+      <% if current_user.followees.include?(user) %>
+        <i class="fas fa-user-minus color-white"></i><%= t('users.show.unfollow') %>
+      <% else %>
+        <i class="fa fa-user-plus color-white"></i>
+        <%= t('users.show.follow') %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

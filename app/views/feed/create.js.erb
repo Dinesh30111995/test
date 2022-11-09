@@ -1,0 +1,6 @@
+<% if @errors.present? %>
+  $("#collectionCreateForm :input").prop("disabled", false);
+  <%= custom_error_flash(@errors, 'error') %>
+<% else %>
+window.location.reload();
+<% end %>

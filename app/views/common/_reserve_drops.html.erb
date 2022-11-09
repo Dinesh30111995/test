@@ -1,0 +1,14 @@
+<% if @reserve_drops.present? %>
+<section class="featured-section">
+  <h2 class="sec-heading"><a href="/reserve_drops"><%= t('dashboard.reserve_drops')%></a></h2>
+    <div id="reserve_drops" class="owl-carousel owl-theme">
+        <% @reserve_drops.each do |collection| %>
+          <div class="item">
+              <div class="nft-explore">
+                <%= render "dashboard/collection_card", collection: collection, :reserve_drop => true %>
+              </div>
+          </div>
+        <% end %>
+    </div>
+</section>  
+<% end %>

@@ -1,0 +1,31 @@
+<main class="main">
+  <div class="container">
+    <div class="row row--grid">
+      <!-- title -->
+      <div class="col-12">
+        <div class="main__title main__title--page">
+          <h1><%= t('dashboard.edition_drops')%></h1>
+        </div>
+      </div>
+      <!-- end title -->
+    </div>
+    <div class="filters-content">
+      <div class="row row--grid">
+        <% if @collections.present? %>
+          <% @collections.each do |collection| %>
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+              <%=render "dashboard/collection_card", collection: collection, edition_drop: true %>
+            </div>
+          <% end %>
+        <% else %>
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+            <h3><%= t('dashboard.no_data_found')%></h3>
+            </div>
+        <% end %>
+      </div>
+    </div>
+    <!-- paginator -->
+
+    <!-- end paginator -->
+  </div>
+</main>

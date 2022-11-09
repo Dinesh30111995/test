@@ -1,0 +1,71 @@
+<div id="swap-modal" class="zoom-anim-dialog mfp-hide modal sm_modal">
+    <button class="modal__close md_cls" type="button"><i class="fas fa-times"></i></button>
+    <h4 class="modal-title share_link_page_h4"><%= t('collections.show.swap_btn') %></h4>
+
+    <%display_quantity = @collection.multiple?%>
+    <p class="swap-content">
+        <!-- <span class="innertitle"> <%= t('collections.show.swap_msg') %></span> -->
+        <span class="collection-card-img">
+            <%= attachment_tag(@collection) %>
+        </span>
+        <span class="frm-title">Do you want to swap <b><%= @collection.name %></b>,</span>
+        <% if display_quantity%>
+            <span><span id="owner_total_quantity"><%= @collection.owned_tokens%></span></span>
+            <label for='owner_quantity'>out of Quantity</label>
+            <input type='number' id='owner_quantity'  class="popup_quantity_input" value="<%= @collection.owned_tokens%>"  max="<%= @collection.owned_tokens%>" min="1"/>
+        <%else%>
+            <span><span id="owner_quantity" class='hide'><%= @collection.owned_tokens%></span></span>
+            <input type='hidden' id='swap_quantity' value=1>
+        <%end%>
+        <input type='hidden' id='owner_contract_address' value=<%= @collection.nft_contract.address%>>
+        <input type='hidden' id='owner_collection_token_id' value=<%= @collection.token%>>
+        <!--<span class="frm-desc"><%= @collection.description %>-->
+        <span class="frm-from" data-toggle="tooltip" data-placement="top" title="<%= @collection.owner.full_name %>">by <%= link_to @collection.owner.full_name, user_path(@collection.owner.address), target: '_blank' %></span> for</span>
+    </p>
+    <% collection_type = @collection.collection_type%>
+    <div class="nft-custom-radio">
+        <%@current_user.swap_collection_list(collection_type, @collection).each do |user_collection|%>
+            <div class="radio-item">
+                <input type="radio" value=<%=user_collection.id%> name="nftradio" id=<%= user_collection.id%> required>
+                <label class="label-icon option1" for=<%= user_collection.id %>>
+                    <div class="flex-box-nft">
+                        <div class="nft-img">
+                            <%= attachment_tag(user_collection) %>
+                        </div>
+                        <div class="nft-content">
+                            <span class="frm-title"><b><%= user_collection.name %></b>,</span>
+                            <span class="frm-from" data-toggle="tooltip" data-placement="top" title="<%= user_collection.owner.full_name %>">by <%= link_to user_collection.owner.full_name, user_path(user_collection.owner.address), target: '_blank', class:'swap_by' %></span></span>
+                            <% if display_quantity%>
+                              <span>
+                                <input type='number' id='requestor_quantity' class="popup_quantity_input" value="<%= user_collection.owned_tokens%>"/>
+                                    /
+                                <span id="requestor_total_quantity"><%= user_collection.owned_tokens%></span>
+                              </span>
+                            <%else%>
+                              <span><span id="requestor_total_quantity" class='hide'><%= user_collection.owned_tokens%></span> /
+                              <input type='hidden' id='requestor_quantity' value='1' /> </span>
+                            <%end%>
+                            <input type='hidden' id='requestor_contract_address' value=<%= user_collection.nft_contract.address%>>
+                            <input type='hidden' id='requestor_collection_token_id' value=<%= user_collection.token%>>
+                        </div>
+                    </div>
+                </label>
+            </div>
+        <%end%>
+    </div>
+    <div class="modal-footer" style="text-align:center">
+      <a class="btn bidding-element-btn sign__btn triggerSwapValidation" href="" role="button"><%= t('collections.show.swap_btn') %></a>
+    </div>
+</div>
+</div>
+
+<!--Follow steps for swap NFT -- Need to change-->
+<div class="zoom-anim-dialog mfp-hide modal sm_modal" id="swapRequest">
+  <button class="modal__close md_cls" type="button"><i class="fas fa-times"></i></button>
+  <h4 class="modal-title share_link_page_h4"> <%= t('shared.follow_steps') %></h4>
+    <div class="signMsg">
+      <%= render partial: 'sign_swap' %>
+    </div>
+  </div>
+
+</div>

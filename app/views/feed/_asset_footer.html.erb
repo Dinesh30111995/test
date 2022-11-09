@@ -1,0 +1,64 @@
+<div class="status-details">
+  <% if current_user %>
+    <%= react_component("collections/like", address: current_user&.address, isLiked: collection.isLiked?(current_user&.id), collectionId: collection.id, likes_count: collection.likes.length, isFeedPage: true) %>
+  <% else %>
+      <button class="card__likes heart show-login-message">
+        <i class="far fa-heart"></i>
+        <i class="fas fa-heart"></i>
+      </button>
+  <% end %>
+  <a href="#" class="comment-pro default-share feed-show" data-id="<%= collection.address %>">
+    <img src="/assets/comment.png">
+    <span id="comment-count-<%= collection.address %>">
+      <%= collection.comments.count %> Comments
+    </span>
+  </a>
+
+  <% if current_user %>
+    <a href="#" class="comment-pro default-share save-collection" data-address="<%= collection.address %>">
+      <% if collection.collection_saved?(current_user) %>
+        <i class="fas fa-bookmark"></i> <span>Undo</span>
+        <% else %>
+        <i class="far fa-bookmark"></i> <span>Save</span>
+      <%end %>
+    </a>
+  <% else %>
+    <a class="default-share">
+      <i class="far fa-bookmark"></i>
+      <span>Save</span>
+    </a>
+  <%end %>
+
+  <div class="more_action_block">
+    <a href="javascript:void(0);" class="share-pro default-share"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <img src="/assets/next.png">
+      <span>Share</span>
+    </a>
+    <% collection_url = collection_url(collection.address) %>
+    <ul class="dropdown-menu header__profile-menu  sharelist" aria-labelledby="dropdownMenuProfile">
+      <li>
+        <a class="social-media-share-btn" target=_blank href="https://www.facebook.com/sharer/sharer.php?u=<%= collection_url %>&caption=<%= collection.name %>&description=<%= collection.description %>" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+          <i class="fa fa-facebook"></i> Facebook
+        </a>
+      </li>
+      <li>
+        <a class="social-media-share-btn" target=_blank href="https://twitter.com/share?url=<%= collection_url %>&text=<%= collection.name %>, <%= collection.description %>" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+          <i class="fa fa-twitter"></i> Twitter
+        </a>
+      </li>
+      <li>
+        <a class="social-media-share-btn" target=_blank href="https://telegram.me/share/url?url=<%= collection_url %>&text=<%= collection.name %>, <%= collection.description %>" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+          <i class="fa fa-telegram"></i> Telegram
+        </a>
+      </li>
+      <li>
+        <a class="social-media-share-btn" target=_blank href="mailto:subject=
+                        <% collection.name %>&body=<%= collection.description %> Link here:<%= collection_url %>">
+          <i class="fa fa-envelope"></i> Email
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+</div>
+<%= render "comments/comment_section", collection: collection, classes: "hide feed-show-#{collection.address}" %>

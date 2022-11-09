@@ -1,0 +1,18 @@
+<% if @status === 0 %>
+  toastr.success('Unfollowed successful')
+  $('.follow-<%= @user.address %>').text("<%=t('users.show.follow') %>")
+  <% if @card %>
+    $('.follow-html-<%= @user.address %>').html('<i class="fa fa-user-plus color-white"></i><%=t('users.show.follow') %>')
+  <% else %>
+    $('.follow-html-<%= @user.address %>').html('<i class="fa fa-plus"></i><%=t('users.show.follow') %>')
+  <% end %>
+<% else %>
+  toastr.success('Following successful')
+  $('.follow-<%= @user.address %>').text("<%= t('users.show.unfollow') %>")
+  <% if @card %>
+    $('.follow-html-<%= @user.address %>').html('<i class="fas fa-user-minus color-white"></i><%=t('users.show.unfollow') %>')
+  <% else %>
+    $('.follow-html-<%= @user.address %>').html('<i class="fa fa-minus"></i><%=t('users.show.unfollow') %>')
+  <% end %>
+<% end %>
+$('.follower-count-<%= @user.address %>').text('<%= @user.followers.count %> Followers')

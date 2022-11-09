@@ -1,0 +1,442 @@
+<main class="main mt-0">
+  <% if @user.banner.present? %>
+    <div class="main__author" style="background: url(<%= url_for(@user.banner) %>) center center / cover no-repeat;;"></div>
+  <% else %>
+   <div class="main__author" data-bg="/assets/dummy-image.jpg" style="background: url(&quot;/assets/dummy-image.jpg&quot;) center center / cover no-repeat;"></div>
+  <% end %>
+
+  <div class="container">
+    <div class="row row--grid">
+      <div class="col-12 col-xl-12">
+        <div class="author author--page few-demon-one">
+          <div class="author__meta demon-one">
+            <%= link_to_image(@user) %>
+
+            <div class="row">
+              <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+                <div class="ddmdol">
+                  <div class="user-pro-details">
+                    <%= link_to_name(@user) %>
+<!--                    <p class="para-link">-->
+<!--                      <span>43 Mil</span> -->
+<!--                      Seguidores-->
+<!--                    </p>-->
+                  </div>
+                  <div class="user-follow-un">
+                    <!-- <a href="#" class="follow-un-demo">
+                      <img src="/assets/add-friend.png">
+                      <span class="color-white">Follow</span>
+
+                    </a> -->
+                    <% if current_user.present? && current_user != @user && !current_user.followees.include?(@user) %>
+                        <%= link_to follow_users_path(id: @user.address), class: "follow-un-demo" do %>
+                            <i class="fa fa-user-plus color-white"></i>
+                            <span class="color-white" style="margin-left: 2px;"><%= t('users.show.follow') %></span>
+                        <% end %>
+                    <% end %>
+
+                    <% if current_user.present? && current_user != @user && current_user.followees.include?(@user) %>
+                        <%= link_to unfollow_users_path(id: @user.address), class: "follow-un-demo" do %>
+                            <i class="fa fa-user-plus color-white"></i>
+                            <span class="color-white" style="margin-left: 2px;"><%= t('users.show.unfollow') %></span>
+                        <% end %>
+                    <% end %>
+                  </div>
+                </div>
+                
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+
+                <div class="creator_box user-share-creator">
+                  <div class="rit-flex">
+                    <div class="more_action_block">
+                      <a class="more_action_btn" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="/assets/nw_asset/share_icon.png"> Share
+                      </a>
+
+                      <ul class="dropdown-menu header__profile-menu sharelist" aria-labelledby="dropdownMenuProfile" style="">
+                        <li><a class="social-media-share-btn" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=<%= user_url(@user) %>&caption=<%= @user.full_name %>&description=<%= @user.bio %>" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+                          <i class="fa fa-facebook"></i> Facebook
+                        </a></li>
+                        <li><a class="social-media-share-btn" target="_blank" href="https://twitter.com/share?url=<%= user_url(@user) %>&text=<%= @user.full_name %>, <%= @user.bio %>" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+                          <i class="fa fa-twitter"></i> Twitter
+                        </a></li>
+                        <li><a class="social-media-share-btn" target="_blank" href="https://telegram.me/share/url?url=<%= user_url(@user) %>&text=<%= @user.full_name %>, <%= @user.bio %>" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+                          <i class="fa fa-telegram"></i> Telegram
+                        </a></li>
+                        <li><a class="social-media-share-btn" target="_blank" href="mailto:subject=
+                      <% @user.full_name %>&body=<%= @user.bio %> Link here:<%= user_url(@user) %>">
+                          <i class="fa fa-envelope"></i> Email
+                        </a></li>
+                      </ul>
+                    </div>
+
+<!--                      <div class="more_action_block">-->
+<!--                        <a class="more_action_btn" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--                          <img src="/assets/nw_asset/more_option.png" class="m-0">-->
+<!--                        </a>-->
+
+<!--                        <ul class="dropdown-menu header__profile-menu dont-sale" aria-labelledby="dropdownMenuProfile">-->
+<!--                          <li>-->
+<!--                            <a href="javascript:void(0)">Remove from sale</a>-->
+<!--                          </li>-->
+<!--                        </ul>-->
+<!--                      </div>-->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-7 col-sm-12 col-12">
+                <div class="form-group get-margin">
+                  <div class="token-input-field-custom">
+                    <input type="text" class="form-control input-custom cursor-pointer common-elementor" id="userAddress" value="<%= @user.address %>" readonly="readonly">
+                    <div class="token-input-field-value">
+                      <i class="fa fa-copy copyUserAddress" data-toggle="tooltip" data-placement="left" title="Copy address to clipboard"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="bio-desc">
+                  <%= link_to_bio(@user) %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-xl-12">
+        <div class="profile pro-dual-section">
+          <!-- tabs nav -->
+
+          <ul class="nav nav-tabs profile__tabs" id="profile__tabs" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link" href="#one-publications" data-toggle="tab">
+                <%= t('users.show.publications') %>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link <%= 'active' if @tab.nil? %>"  href="<%= user_path(id: @user.address) %>"><%= t('users.show.on_sale') %></a>
+            </li>
+             <li class="nav-item">
+              <a class="nav-link <%= 'active' if @tab == 'created' %>" href="<%= user_path(id: @user.address, tab: "created", page_no: @page_no) %>" ><%= t('users.show.created') %></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link <%= 'active' if @tab == 'collectibles' %>" href="<%= user_path(id: @user.address, tab: "collectibles", page_no: @page_no) %>" ><%= t('users.show.collectibles') %></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link <%= 'active' if @tab == 'liked' %>"  href="<%= user_path(id: @user.address, tab: "liked") %>"><%= t('users.show.liked') %></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link <%= 'active' if @tab == 'saved' %>"  href="<%= user_path(id: @user.address, tab: "saved") %>"><%= t('users.show.saved') %></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link <%= 'active' if @tab == 'activity' %>"  href="<%= user_path(id: @user.address, tab: "activity") %>"><%= t('users.show.activity') %></a>
+            </li>
+
+            <li class="nav-item">
+              <%= link_to user_path(id: @user.address, tab: "following"), :class=>"nav-link #{'active' if @tab == 'following'}" do %>
+                Following
+                <span class="notify"><%= @followees_count %></span>
+              <% end %>
+            </li>
+            <li class="nav-item">
+              <%= link_to user_path(id: @user.address, tab: "followers"), class: "testValFollower nav-link #{'active' if @tab == 'followers'}" do %>
+                Followers
+                <span class="notify"><%= @followers_count %></span>
+              <% end %>
+            </li>
+            <li class="nav-item">
+              <%= link_to user_path(id: @user.address, tab: "nft_collections"), class: "nav-link #{'active' if @tab == 'nft_collections'}" do %>
+                <%= t('users.show.nft_collection') %>
+              <% end %>
+            </li>
+          </ul>
+          <!-- end tabs nav -->
+        </div>
+
+
+        <% if @tab == "following" %>
+          <div id="following" class="tab-pane fade <%= 'show active' if @tab == 'following' %>">
+            <% if @data.present? %>
+              <%= render "follow", follows: @data, id: "following" %>
+              <% if @data.next_page.present? %>
+                <div class="demand-loader">
+                  <%= link_to "Load more users", following_followers_users_path(page: @data.current_page+1, id: @user.address, tab: "following"), id: "load-more-users", class:"loading-btn", remote: true %>
+                </div>
+              <% end %>
+            <% else %>
+              <%= render partial: 'common/empty' %>
+            <% end %>
+          </div>
+        <% end %>
+
+        <% if @tab == "followers" %>
+          <div id="followers" class="tab-pane fade <%= 'show active' if @tab == 'followers' %>">
+            <% if @data.present? %>
+              <%= render "follow", follows: @data, id: "followers", followees: @data %>
+              <% if @data.next_page.present? %>
+                <div class="demand-loader">
+                  <%= link_to "Load more users", following_followers_users_path(page: @data.current_page+1, id: @user.address, tab: "followers"), id: "load-more-users", class:"loading-btn", remote: true %>
+                </div>
+              <% end %>
+            <% else %>
+              <%= render partial: 'common/empty' %>
+            <% end %>
+          </div>
+        <% end %>
+          <!-- content tabs -->
+          <div class="tab-content user-collection-section">
+            <%= render 'users/user_publication' %>
+            <div class="tab-pane fade <%= 'active show' if !['liked', 'activity','following','followers', 'saved'].include?(@tab) %>" id="tab-1" role="tabpanel">
+              <div class="">
+                  <% if !['liked', 'activity','following','followers', 'saved', 'nft_collections'].include?(@tab) and @data.present? %>
+                    <div class="row collection-section" style="">
+                      <% @data.each do |collection| %>
+                          <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                            <%= render "/dashboard/collection_card", collection: collection %>
+                          </div>
+                      <% end %>
+                  <% elsif ['nft_collections'].include?(@tab) and @data.present? %>
+                    <div class="row collection-section">
+                      <div class="row col-12" style="float: right !important;">
+                        <% if @page_no.to_i > 1 %>
+                          <p class="text-right"><a href="<%= user_path(id: @user.address, tab: "nft_collections", page_no: @page_no.to_i - 1) %>"><span class="pull-right">Previous</span></a></p>
+                        <% end %>
+                        <% if @data[:next_page]%>
+                          <p class="text-right"><a href="<%= user_path(id: @user.address, tab: "nft_collections", page_no: @page_no.to_i + 1) %>"><span class="pull-right">Next</span></a></p>
+                        <% end %>
+                      </div>
+                      <% @data[:collections].each do |collection| %>
+                        <div class="col-12 col-md-6 col-lg-4">
+                          <%= render "my_collection_card", collection: collection %>
+                        </div>
+                      <% end %>
+                    </div>
+                  <% else %>
+                      <div class="col-12">
+                        <%= render partial: 'common/empty' %>
+                      </div>
+                  <% end %>
+                
+              </div>
+              <!-- end collapse -->
+            </div>
+
+            <!-- Like Section -->
+            <div class="tab-pane fade <%= 'active show' if @tab == 'liked' %>" id="tab-2" role="tabpanel">
+              <div class="">
+                  <% if !['activity','following','followers', 'saved'].include?(@tab) and @liked.present? %>
+                    <div class="row collection-section" style="">
+                      <% @liked.each do |collection| %>
+                        <% next unless collection.present? %>
+                        <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                          <%= render "/dashboard/collection_card", collection: collection %>
+                        </div>
+                      <% end %>
+                      </div>
+                  <% else %>
+                      <div class="col-12">
+                        <%= render partial: 'common/empty' %>
+                      </div>
+                  <% end %>
+              </div>
+            </div>
+            <!-- Like Section End -->
+            <% if @tab == 'saved' %>
+              <!-- Saved Section -->
+              <div class="tab-pane fade <%= 'active show' if @tab == 'saved' %>" id="tab-saved" role="tabpanel">
+                <div class="">
+                  <% collections = current_user.collection_save.map(&:collection).sort_by(&:created_at).reverse %>
+                  <% if collections.present? %>
+                    <div class="row collection-section">
+                      <% collections.each do |collection| %>
+                        <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                          <%= render "/dashboard/collection_card", collection: collection %>
+                        </div>
+                      <% end %>
+                    </div>
+                  <% else %>
+                    <div class="col-12">
+                      <%= render partial: 'common/empty' %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+            <!-- Saved Section End -->
+
+            <div class="tab-pane fade <%= 'active show' if @tab == 'activity' %>" id="tab-3" role="tabpanel">
+              <div class="row">
+                <!-- sidebar -->
+                <div class="col-12 col-xl-2">
+                  
+                </div>
+                <!-- end sidebar -->
+
+                <!-- content -->
+                <div class="col-12 col-xl-8">
+                  <div class="row row--grid">
+                    <div class="col-12">
+                      <div class="filter-wrap">
+                        <button class="filter-wrap__btn" type="button" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter"><%= t('users.show.open_filter') %></button>
+                        <div class="collapse filter-wrap__content" id="collapseFilter">
+                          <!-- filter -->
+                          <div class="filter mt-30">
+                            <h4 class="filter__title mb-20">
+                              <%= t('users.show.filters') %>
+                              <!-- <a href="<%#=my_items_path(:tab=>"activity")%>" style="font-size: 12px;"><%#= t('users.show.clear_all') %></a> -->
+                            </h4>
+
+                            <div class="filter__group">
+                              <ul class="filter__checkboxes few-demands">
+                                <% options = { user_id: @user.address, tab: "activity" } %>
+                                <li class="<%= (is_filter_active(params[:filters], 'minted') == 'active') ? "active" : '' %>">
+                                  <input id="type5" type="checkbox" name="type5" <%= (is_filter_active(params[:filters], 'minted') == 'active') ? "checked='true'" : '' %> onclick="window.location.href ='<%= build_filter_path("my_activity", params[:filters], "minted", options) %>'">
+                                  <label for="type5"><%= t('users.show.minted') %></label>
+                                </li>
+                                <li class="<%= (is_filter_active(params[:filters], 'bid') == 'active') ? "active" : '' %>">
+                                  <input id="type9" type="checkbox" name="type9"  <%= (is_filter_active(params[:filters], 'bid') == 'active') ? "checked='true'" : '' %> onclick="window.location.href ='<%= build_filter_path("my_activity", params[:filters], "bid", options) %>'">
+                                  <label for="type9"><%= t('users.show.bids') %></label>
+                                </li>
+                                <li class="<%= (is_filter_active(params[:filters], 'like') == 'active') ? "active" : '' %>">
+                                  <input id="type10" type="checkbox" name="type10"  <%= (is_filter_active(params[:filters], 'like') == 'active') ? "checked='true'" : '' %> onclick="window.location.href ='<%= build_filter_path("my_activity", params[:filters], "like", options) %>'">
+                                  <label for="type10"><%= t('users.show.likes') %></label>
+                                </li>
+                                <li class="<%= (is_filter_active(params[:filters], 'following') == 'active') ? "active" : '' %>">
+                                  <input id="type11" type="checkbox" name="type11"  <%= (is_filter_active(params[:filters], 'following') == 'active') ? "checked='true'" : '' %> onclick="window.location.href ='<%= build_filter_path("my_activity", params[:filters], "following", options) %>'">
+                                  <label for="type11"><%= t('users.show.followings') %></label>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                          <!-- end filter -->
+                        </div>
+                      </div>
+                    </div>
+
+                    <% if @tab == "activity" and @data.present? %>
+                      <div class="col-12 col-lg-6 col-xl-12 infer-comp">
+                        <% @data and @data.each do |activity| %>
+                            <% next if activity.item.blank? %>
+                            <%if ["Follow", "Like", "Collection", "Bid"].include?(activity.item_type)%>
+                                <%= render "activities/#{activity.item_type.downcase}", activity: activity if ["Follow", "Like", "Collection", "Bid"].include?(activity.item_type) %>
+                            <%end%>
+                        <% end %>
+                      </div>
+                      <% else %>
+                          <div class="col-12">
+                            <%= render partial: 'common/empty' %>
+                          </div>
+                      <% end %>
+
+                      </div>
+                </div>
+                <!-- end content -->
+              </div>
+            </div>
+            
+            <div class="tab-pane fade" id="tab-4" role="tabpanel">
+              <div class="row row--grid">
+                <!-- details form -->
+                <div class="col-12 col-lg-6">
+                  <form action="#" class="sign__form sign__form--profile">
+                    <div class="row">
+                      <div class="col-12">
+                        <h4 class="sign__title"><%= t('users.show.profile_details') %></h4>
+                      </div>
+
+                      <div class="col-12 col-md-6 col-lg-12 col-xl-6">
+                        <div class="sign__group">
+                          <label class="sign__label" for="username"><%= t('users.show.login') %></label>
+                          <input id="username" type="text" name="username" class="sign__input" placeholder="User123">
+                        </div>
+                      </div>
+
+                      <div class="col-12 col-md-6 col-lg-12 col-xl-6">
+                        <div class="sign__group">
+                          <label class="sign__label" for="email"><%= t('users.show.email') %></label>
+                          <input id="email" type="text" name="email" class="sign__input" placeholder="email@email.com">
+                        </div>
+                      </div>
+
+                      <div class="col-12 col-md-6 col-lg-12 col-xl-6">
+                        <div class="sign__group">
+                          <label class="sign__label" for="firstname"><%= t('users.show.first_name') %></label>
+                          <input id="firstname" type="text" name="firstname" class="sign__input" placeholder="John">
+                        </div>
+                      </div>
+
+                      <div class="col-12 col-md-6 col-lg-12 col-xl-6">
+                        <div class="sign__group">
+                          <label class="sign__label" for="lastname"><%= t('users.show.last_name') %></label>
+                          <input id="lastname" type="text" name="lastname" class="sign__input" placeholder="Doe">
+                        </div>
+                      </div>
+
+                      <div class="col-12">
+                        <button class="sign__btn" type="button"><%= t('shared.save') %></button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <!-- end details form -->
+
+                <!-- password form -->
+                <div class="col-12 col-lg-6">
+                  <form action="#" class="sign__form sign__form--profile">
+                    <div class="row">
+                      <div class="col-12">
+                        <h4 class="sign__title"><%= t('users.show.change_password') %></h4>
+                      </div>
+
+                      <div class="col-12 col-md-6 col-lg-12 col-xl-6">
+                        <div class="sign__group">
+                          <label class="sign__label" for="oldpass"><%= t('users.show.old_password') %></label>
+                          <input id="oldpass" type="password" name="oldpass" class="sign__input">
+                        </div>
+                      </div>
+
+                      <div class="col-12 col-md-6 col-lg-12 col-xl-6">
+                        <div class="sign__group">
+                          <label class="sign__label" for="newpass"><%= t('users.show.new_password') %></label>
+                          <input id="newpass" type="password" name="newpass" class="sign__input">
+                        </div>
+                      </div>
+
+                      <div class="col-12 col-md-6 col-lg-12 col-xl-6">
+                        <div class="sign__group">
+                          <label class="sign__label" for="confirmpass"><%= t('users.show.confirm_new_password') %></label>
+                          <input id="confirmpass" type="password" name="confirmpass" class="sign__input">
+                        </div>
+                      </div>
+
+                      <div class="col-12 col-md-6 col-lg-12 col-xl-6">
+                        <div class="sign__group">
+                          <label class="sign__label" for="select">Select</label>
+                          <select name="select" id="select" class="sign__select">
+                            <option value="0">Option</option>
+                            <option value="1">Option 2</option>
+                            <option value="2">Option 3</option>
+                            <option value="3">Option 4</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="col-12">
+                        <button class="sign__btn" type="button"><%= t('shared.change') %></button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <!-- end password form -->
+              </div>
+            </div>
+          </div>
+        <!-- end content tabs -->
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

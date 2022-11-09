@@ -1,0 +1,14 @@
+<% if @edition_drops.present? %>
+<section class="featured-section">
+  <h2 class="sec-heading"><a href="/edition_drops"><%= t('dashboard.edition_drops')%></a></h2>
+    <div id="edition_drops" class="owl-carousel owl-theme">
+      <% @edition_drops.each do |collection| %>
+        <div class="item">
+          <div class="nft-explore">
+          <%= render "dashboard/collection_card", collection: collection, edition_drop: true %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+</section>  
+<% end %>

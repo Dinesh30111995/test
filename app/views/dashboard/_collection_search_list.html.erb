@@ -1,0 +1,20 @@
+<div class="filters-content">
+  <div class="row row--grid">
+    <% if @users.present? %>
+      <% @users.each do |user| %>
+        <%= render "dashboard/user_card", user: user%>
+      <% end %>
+    <% end %>
+    <% if @collections.present? %>
+      <% @collections.each do |collection| %>
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+          <%=render "dashboard/collection_card", collection: collection%>
+        </div>
+      <% end %>
+    <% elsif !@users.present? && @collections.length == 0%> 
+      <div class="col-12">
+        <h3><%= t('dashboard.no_data_found')%></h3>
+      </div>
+    <% end %>
+  </div>
+</div>

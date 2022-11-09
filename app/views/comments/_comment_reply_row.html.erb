@@ -1,0 +1,59 @@
+<article class="comment-user-block" id="comment_block_<%= comment.id %>" >
+  <div class="primary-user">
+    <div class="avatar-block">
+      <%= image_tag comment.user.profile_image %>
+    </div>
+    <% comment_like_count = comment.comment_likes.length.to_s %>
+    <div class="info-block" id="comment_section_<%= comment.id %>" data-address="<%= collection.address %>">
+      <div class="cmnt-sec" >
+        <a href="<%= user_path(comment.user.address)%>" target="_blank">
+          <h3>@<%= comment.user.full_name %></h3>
+        </a>
+        <p><%= markdown comment.message %></p>
+        <ul class="actions mb-10">
+          <% if current_user %>
+            <%= react_component(
+              "collections/comment_like",
+              isUserLiked: comment.comment_likes.select { |u| u.user_id == current_user.id }.first.present?,
+              commentId: comment.id,
+              likes: comment.comment_likes.pluck(:id),
+            ) %>
+          <% end %>
+          <li><a href="" class="comment-reply-show" data-id="<%= comment.id %>" >Reply</a></li>
+          <li><a href="javascript:void(0);"><%= time_ago_in_words(comment.created_at).capitalize %> ago</a></li>
+          <li>
+            <a href="javascript:void(0);" id="comment_like_<%= comment.id %>" data-count="<%= comment_like_count %>">
+              <%= comment_like_count %> Likes
+            </a>
+          </li>
+          <% if comment.user_id == current_user&.id %>
+          <li>
+            <a href="javascript:void(0)" class="comment-delete" data-id="<%= comment.id %>" >
+              Delete
+            </a>
+          </li>
+          <% end %>
+        </ul>
+        <div class="hide" id="comment_reply_div_<%= comment.id %>">
+          <div class="comment-flex">
+            <div contenteditable="true" class="comment-textarea form-control comment-section-input" id="comment_input_<%= comment.id %>"></div>
+            <%
+=begin%>
+ <textarea type="text" class="form-control comment-section-input"  placeholder="Please Enter Your Comment" rows="3"> </textarea> 
+<%
+=end%>
+            <button class="home__btn home__btn--clr comment-reply demand-btn-comment aeroplane-zero" data-id="<%= comment.id %>">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <% sub_row = collection.comment_sub_row comment.id %>
+      <% if sub_row.length > 0 %>
+        <% sub_row.each do |comment| %>
+          <%= render "comments/comment_reply_row", comment: comment, collection: collection %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</article>

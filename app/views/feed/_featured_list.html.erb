@@ -1,0 +1,21 @@
+<div class="featured-list">
+  <ul class="explore-fav">
+    <li class="active">
+      <%= link_to load_more_button_feed_index_path(type: :explore), method: :get, remote: true, class: 'load-collection-category', action_type: load_more_button_feed_index_path(type: :explore, page: 2) do %>
+        Explore
+      <% end %>
+    </li>
+    <% if current_user %>
+    <li>
+      <%= link_to my_friends_feed_index_path, method: :get, remote: true, class: 'load-collection-category', action_type: my_friends_feed_index_path(page: 2) do %>
+        My Followings
+      <% end %>
+    </li>
+    <li>
+      <%= link_to load_more_button_feed_index_path(type: :favorites), method: :get, remote: true, class: 'load-collection-category', action_type: load_more_button_feed_index_path(type: :favorites, page: 2) do %>
+        Favorites
+      <% end %>
+    </li>
+    <% end %>
+  </ul>
+</div>

@@ -1,0 +1,21 @@
+
+<% if @collections.length == 0 %>
+<div>No records found</div>
+<% end %>
+
+<% @collections.each do |collection|%>
+  <% type = attachment_type collection %>
+  <% if type === 'image' %>
+    <% if collection.collection_type === 'multiple' %>
+      <%= render 'feed/image_multiple', collection:collection %>
+    <% else %>
+      <%= render 'feed/image_single', collection:collection %>
+    <% end %>
+  <% elsif type === 'pdf' %>
+    <%= render 'feed/pdf', collection:collection %>
+  <% elsif type === 'video' %>
+    <%= render 'feed/video', collection:collection %>
+  <% elsif type === 'audio' %>
+    <%= render 'feed/audio', collection:collection %>
+  <% end %>
+<% end %>

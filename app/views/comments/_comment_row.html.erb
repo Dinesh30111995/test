@@ -1,0 +1,5 @@
+<% if collection.comments.present? %>
+  <% collection.comment_row.each do |comment| %>
+    <%= render "comments/comment_reply_row", comment: comment, collection: collection %>
+  <% end %>
+<% end %>

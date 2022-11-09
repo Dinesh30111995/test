@@ -1,0 +1,39 @@
+<div class="first-pro-heading">
+  <a href="<%= collection_path(collection.address)%>" target="_blank">
+    <h1><%= collection.title %></h1>
+  </a>
+</div>
+<% if collection.instant_sale_enabled? ||  collection.put_on_sale? %>
+<div class="amount-elements-first">
+  <div class="thrw-one">
+    <div class="bg-amount-layer">
+      <div class="amount-layer">
+        <% symbol = ''%>
+        <% price = 0 %>
+        <% if collection.instant_sale_price %>
+          <% symbol = collection.erc20_token.symbol %>
+          <% price = collection.instant_sale_price %>
+          <span>
+            <%= collection.instant_sale_price %> <%= collection.erc20_token.symbol %>
+          </span>
+        <% else %>
+          <% if collection.max_bid %>
+            <% symbol = collection.max_bid.erc20_token.symbol %>
+            <% price = collection.max_bid.amount %>
+            <p class="bid_status">Highest bid <b><%= collection.max_bid.value %></b></p>
+          <%else%>
+            <span>No active Bids</span>
+          <% end %>
+        <%end%>
+      </div>
+    </div>
+    <% if symbol.present? && @token_prices.present? %>
+      <% usd_price = @token_prices[symbol.downcase]['usd'] %>
+      <p>$<%= (price.to_f * usd_price).round(2) || 0 %> of 1 </p>
+    <% end %>
+  </div>
+  <div class="thrw-two">
+    <a href="<%= collection_path(collection.address)%>" target="_blank" class="buy-pro-now">Buy Now</a>
+  </div>
+</div>
+<% end %>

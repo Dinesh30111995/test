@@ -1,0 +1,24 @@
+<section class="explore-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <!--
+                <img class="infinity one" src="/assets/nw_asset/bubble.png" />
+                <img class="infinity two" src="/assets/nw_asset/bubble.png" />
+                -->
+                <div id="explorer-carousel" class="owl-carousel owl-theme">
+                    <% if @collections.present? %>
+                        <% @collections.each do |collection| %>
+                            <div class="item">
+                                <div class="nft-explore">
+                                    <%= render "dashboard/collection_card", collection: collection %>
+                                </div>
+                            </div>
+                        <% end %>
+                    <% end %>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</section>

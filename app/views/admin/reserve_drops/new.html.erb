@@ -1,0 +1,115 @@
+<div class="main-content">
+  <div class="page-content">
+    <div class="container-fluid">
+
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-6">
+                  <h4 class="card-title"><%= t("admin.reserve_drops.index.title") %></h4>
+                </div>
+                 <div class="col-sm-6">
+                  <%= form_tag(new_admin_reserve_drop_path, method: :get, class: '') do %>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <input name="query" type="text" id="name" placeholder="Search:" style="height:34px;" value="<%=params[:query]%>"/>
+                      </div>
+                      <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary btn-no-style">Search</button>
+                      </div>
+                    </div>
+                  <% end %>
+
+                </div>
+              </div>
+              <table id="reserve-collections" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                <thead>
+                  <tr>
+                  <th></th>
+                  <th>Id</th>
+                    <!-- <th><%#= t("admin.reserve_drops.index.id") %></th> -->
+                    <th><%= t("admin.reserve_drops.index.name") %></th>
+                    <th><%= t("admin.reserve_drops.index.address") %></th>
+                                        <th><%= t("admin.reserve_drops.index.categories") %></th>
+
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if @collections.present? %>
+                    <% @collections.each do |collection| %>
+                      <tr>
+                        <td></td>
+                        <td><%=collection.id%></td>
+                        <!-- <td><%#= fcollection.id %></td> -->
+                        <td><%= collection.name %></td>
+                        <td><%= collection.address %></td>
+                                                <td><%= collection.category.join(',') %></td>
+
+                      </tr>
+                    <% end %>
+                  <% else %>
+                    <tr>
+                      <td colspan="4" class="text-center"><%= t(:no_records, scope: :admin) %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <%= form_tag(add_admin_reserve_drops_path, method: :post, id: 'reserve_drops_form') do %>
+
+        <div class="card-body">
+          <h4 class="card-title"> Other Details</h4>
+
+          <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label"><%= t("admin.reserve.form.minimum_bid") %></label>
+            <div class="col-md-10">
+              <%= text_field_tag 'reserve_drop[min_bid_price]', nil, class: 'form-control', style: 'width:250px;float:left', placeholder: 'Minimum Bid' %>
+              <input name="reserve_drop[collection_ids]" type="hidden" id="selected_reserve_items"/>
+              <%= select_tag "reserve_drop[min_bid_erc20_token_id]", options_for_select(Erc20Token.select_options), class: "sign__select chosen-select", required: true %>
+            </div>
+          </div>
+
+         <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label"><%= t("admin.reserve.form.start_at") %></label>
+            <div class="col-md-10">
+                <%= datetime_field_tag 'reserve_drop[starts_at]', nil, class: 'form-control' , style: 'width:250px;', placeholder: 'Start At' %>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label"><%= t("admin.reserve.form.expires_in") %></label>
+            <div class="col-md-10">
+                <%= datetime_field_tag 'reserve_drop[expires_in]', nil, class: 'form-control' , style: 'width:250px;', placeholder: 'Expies in' %>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="example-text-input" class="col-md-2 col-form-label"></label>
+            <div class="col-md-10">
+            <button type="submit" id="reserve_add" class="btn btn-primary mr-1 w-md"><%= t('shared.submit')%></button>
+            <%= link_to t('shared.cancel'), admin_reserve_drops_path, class: "btn btn-secondary w-md add_btn" %>            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="flickr_pagination">
+            <%= will_paginate @collections %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+</script>

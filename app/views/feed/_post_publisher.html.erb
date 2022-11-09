@@ -1,0 +1,384 @@
+<%= form_tag collections_path, method: :post, multipart: true, remote: true, authenticity_token: true, id: "collectionCreateForm" do %>
+<div class="linear-form">
+  <div class="demolish-post">
+    <div class="promote-post">
+      <div class="profile-promote-img">
+        <%= image_tag current_user.profile_image, class: 'img-responsive' %>
+      </div>
+      <div class="promote-first-form">
+        <div class="form-group promote-group">
+          <label>Name</label>
+          <input type="text" name="collection[name]" class="form-control form-list" placeholder="Title NFT">
+        </div>
+        <div class="form-group promote-group">
+          <label>Description</label>
+          <input type="text" name="collection[description]" class="form-control form-list" placeholder="Enter Your Description">
+        </div>
+        <div class="form-group promote-group">
+          <label for="royalties"><%= t('collections.form.categories') %></label>
+          <select data-placeholder="Choose tags ..." name="collection[category]" id="collection-category" class="sign__select chosen-select selectbox-one" required>
+            <% Category.pluck(:name).each do |category| %>
+              <option value="<%= category %>"><%= category %></option>
+            <% end %>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="confirmation-post">
+      <p id="promote-post">Do you want to promote this post <span class="icon-element"></span></p>
+    </div>
+  </div>
+  <div class="open-promote-post">
+<!--    <div class="friends-followers">-->
+<!--      <div class="checkbox">-->
+<!--        <label class="one-label">-->
+<!--          <input type="checkbox" class="form-control checkbox-customize" name="collection[followers]" value="">-->
+<!--          <span>Followers</span>-->
+<!--        </label>-->
+<!--      </div>-->
+<!--    </div>-->
+    <div class="sale-conditions">
+      <div class="put-on-sale-conditions common-para-switch">
+        <p><%= t('shared.put_on_sale') %></p>
+        <label class="switch_type common-switch" id="put_sale">
+          <input type="checkbox" name="collection[put_on_sale]">
+          <span class="slider round"></span>
+        </label>
+      </div>
+      <div class="instant-sale-conditions common-para-switch">
+        <p><%= t('shared.instant_sale_price') %></p>
+        <label class="switch_type common-switch" id="instant_sale">
+          <input type="checkbox" id="collection_instant_sale_enabled" name="collection[instant_sale_enabled]">
+          <span class="slider round"></span>
+        </label>
+      </div>
+      
+      <div class="unlock-on-purchase-conditions common-para-switch">
+        <p><%= t('shared.unlock_one_purchased') %></p>
+        <label class="switch_type common-switch" id="unlock_purchase">
+          <input type="checkbox" name="collection-unlock" id="collection-unlock-on-purchase">
+          <span class="slider round"></span>
+        </label>
+      </div>
+      
+    </div>
+
+    <div>
+      <div id="instPrice" class="hide first-group">
+        <div class="inp-grp-flex">
+          <div class="sign__group">
+            <input type="text" name="collection[instant_sale_price]" class="sign__input" id="instant-price" placeholder="Enter price for one piece"/>
+          </div>
+          <div class="sign__group">
+            <%= select_tag "collection[erc20_token_id]", options_for_select(Erc20Token.select_options), class: "sign__select chosen-select selectbox-one", required: true %>
+          </div>
+        </div>
+      </div>
+      <div class="unlock-description-section hide first-group">
+        <div class="sign__group">
+          <input type="text" id="collection-unlock-description" name="collection[unlock_on_purchase]" class="sign__input" placeholder="Enter unlock description">
+        </div>
+      </div>
+    </div>
+
+    <div class="choose-collect">
+
+    <div class="row">
+      <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+        <div class="form-group promote-group">
+          <label for="royalties"><%= t('collections.form.categories') %></label>
+          <select data-placeholder="Choose tags ..." name="collection[category]" id="collection-category" class="sign__select chosen-select selectbox-one" required>
+            <% Category.pluck(:name).each do |category| %>
+              <option value="<%= category %>"><%= category %></option>
+            <% end %>
+          </select>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+        <div class="form-group promote-group">
+          <label><%= t('collections.form.royalties') %></label>
+          <input type="text" name="collection[royalty]" class="form-control form-list" placeholder="Suggested: 10%, 20%, 30%">
+        </div>
+      </div>
+    </div>
+      
+      <p>Choose Collection</p>
+      <div>
+        <label class="radio-img collection-select">
+          <%= radio_button_tag 'collection[collection_type]', "single", nil, class: "chooseCollectionNft chooseCollectionNftClass", :id => "chooseCollectionNft1", checked: true %>
+          <div class="image">
+            <div class="icon-style-choose-collection">
+              <span>S</span>
+            </div>
+            <div class="label-style-choose-collection">
+              <label>Single</label>
+            </div>
+          </div>
+        </label>
+        <label class="radio-img collection-select">
+          <%= radio_button_tag 'collection[collection_type]', "multiple", nil, class: "chooseCollectionNft chooseCollectionNftClass", :id => "chooseCollectionNft2" %>
+          <div class="image">
+            <div class="icon-style-choose-collection">
+              <span>M</span>
+            </div>
+            <div class="label-style-choose-collection">
+              <label>Multiple</label>
+            </div>
+          </div>
+        </label>
+      </div>
+      <div class="hide" id="collection-select-show">
+        <label class="radio-img">
+          <%= radio_button_tag 'chooseCollection', "create", nil, class: "chooseCollectionNft", :id => "type4" %>
+          <div class="image">
+            <div class="icon-style-choose-collection">
+              <span>+</span>
+            </div>
+            <div class="label-style-choose-collection">
+              <label>Create</label>
+              <span id="type4_text">ERC-721</span>
+            </div>
+          </div>
+        </label>
+        <label class="radio-img">
+          <%= radio_button_tag 'chooseCollection', "nft", true, class: "chooseCollectionNft", :id => "type5" %>
+          <div class="image">
+            <div class="icon-style-choose-collection">
+              <span>N</span>
+            </div>
+            <div class="label-style-choose-collection">
+              <label>NFT</label>
+              <span>NFT</span>
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <h4 class="sign__title">Choose Minting Type</h4>
+      <div class="sign__group sign__group--row">
+        <ul class="sign__radio">
+          <li>
+            <%= radio_button_tag 'chooseMintType', "mint", nil, class: "chooseCollectionErc", :checked => true%>
+            <label for="chooseMintType_mint">Instant Minting</label>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row hide" id="multiple-div">
+      <div class="col-12">
+        <div class="form-group promote-group">
+          <label for="no_of_copies"><%= t('collections.form.number_of_copies') %></label>
+          <input type="number" min="1" id="no_of_copies" name="collection[no_of_copies]" class="form-control form-list" placeholder="e.g 5" value="1" />
+        </div>
+      </div>
+    </div>
+
+    <div class="attribute-section">
+      <div class="row">
+        <div class="col-md-6 col-sm-12 col-12">
+          <div class="form-group promote-group">
+            <label><%= t('collections.form.properties') %></label>
+            <input type="text" name="collection[attributes][0][key]" class="form-control form-list attr-key"  placeholder="e. g. .Size ">
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-12 col-12">
+          <div class="form-group promote-group">
+            <label>&nbsp;</label>
+            <input type="text" name="collection[attributes][0][value]" class="form-control form-list attr-val" placeholder="e. g. M">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-15 uploader-element hide" id="uploader">
+    <div class="col-12">
+      <div class="codrops-header">
+        <div class="box">
+          <span class="placeholder" id="uploader_placeholder" style="">PNG, GIF, WEBP, MP4 or MP3. Max 30mb.</span>
+          <input accept="image/png,image/jpeg,image/gif,image/webp,video/mp4,video/webm,audio/mp3,audio/webm,audio/mpeg" type="file" name="collection[attachment]" id="file-1" class="sign__file-upload create_file_upload" required/>
+          <label id="choose_file_selected" for="file-1"><span><%= t('collections.form.choose_file') %></span></label>
+          <div id="imagePreviewRes"></div>
+          <div class="close-preview-button" id="close-preview-button">
+            <span>X</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="coverUpload hide">
+    <label><%= t('collections.form.upload_cover') %><span> *</span></label>
+    <div class="row mb-15">
+      <div class="col-12">
+        <div class="codrops-header">
+          <div class="box">
+            <span class="placeholder" id="placeholder2" style="">JPG, PNG, GIF or WEBP. Max 30mb.</span>
+            <input accept="image/png,image/jpeg,image/gif,image/webp" type="file" name="collection[cover]" id="file-2" class="inputfile inputfile-1"/>
+            <label id="choose_file_selected2" for="file-2"><span><%= t('collections.form.choose_file') %></span></label>
+            <div id="imagePreviewRes2"></div>
+            <div class="close-preview-button" id="close-preview-button2"><span>X</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="publish-promote-form">
+    <div class="publish-layer-one">
+      <div class="img-one-assets" data-value="image">
+        <a>
+          <img src="/assets/camera.png" class="img-responsive">
+          <span>Image</span>
+        </a>
+      </div>
+      <div class="img-one-assets" data-value="video">
+        <a>
+          <img src="/assets/video.png" class="img-responsive">
+          <span>Video</span>
+        </a>
+      </div>
+      <div class="img-one-assets" data-value="audio">
+        <a>
+          <img src="/assets/podcast.png" class="img-responsive podcast-img">
+          <span>Podcast</span>
+        </a>
+      </div>
+      <div class="img-one-assets" data-value="pdf">
+        <a>
+          <i class="fas fa-file-pdf mr-2" style="color: red"></i>
+          <span> Pdf</span>
+        </a>
+      </div>
+    </div>
+    <div class="publish-layer-two">
+      <%= submit_tag 'Create', class: 'sign__btn hide', id: 'submitCollection', 'data-disable-with': "<i class='fa fa-spinner fa-spin'></i> Creating...".html_safe %>
+      <button class="publish-btn triggerCollectionValidation" id="submitCollection" type="submit">Publish</button>
+    </div>
+  </div>
+</div>
+  <%= hidden_field_tag 'collection[is_promoted]', false %>
+  <%= hidden_field_tag 'collection_contract_address', nil %>
+  <%= hidden_field_tag 'collection_contract_type', nil %>
+  <%= hidden_field_tag 'collection_id', nil %>
+  <%= hidden_field_tag 'collection_token_uri', nil %>
+  <%= hidden_field_tag 'collection_supply', nil %>
+  <%= hidden_field_tag 'collection_royalty_fee', nil %>
+  <%= hidden_field_tag 'collection[data]', nil, class: 'collection-data-val' %>
+<% end %>
+<div class="row collection-attribute-entry-base hide">
+  <div class="col-md-6 col-sm-12 col-12">
+    <div class="form-group promote-group">
+      <input type="text" name="collection[attributes][0][key]" class="form-control form-list attr-key"  placeholder="e. g. .Size ">
+    </div>
+  </div>
+  <div class="col-md-6 col-sm-12 col-12">
+    <div class="form-group promote-group">
+      <input type="text" name="collection[attributes][0][value]" class="form-control form-list attr-val" placeholder="e. g. M">
+    </div>
+  </div>
+</div>
+<script>
+  $('.collection-select').click(function(){
+      if($(this).children('.chooseCollectionNftClass').val() === 'multiple') {
+          $('#multiple-div').removeClass('hide')
+          $('#type4_text').text('ERC-1155')
+          $('#no_of_copies').val('')
+      }else {
+          $('#multiple-div').addClass('hide')
+          $('#type4_text').text('ERC-721')
+          $('#no_of_copies').val(1)
+      }
+    $('#collection-select-show').removeClass('hide')
+  });
+  // $('#collectionCreateForm').click(function(e){
+  //     if($('#collection_is_promoted').val() === 'false') {
+  //         $(this).attr('action', '/feed')
+  //     }else {
+  //         $(this).attr('action', '/collections')
+  //     }
+  // });
+  $('.img-one-assets').click(function(){
+      const val =  $(this).attr('data-value')
+      if(val === 'image') {
+          $('#uploader_placeholder').text('Please Upload PNG, GIF, WEBP Files')
+          $('#file-1').attr('accept', 'image/png,image/jpeg,image/gif,image/webp')
+      } else if(val === 'video') {
+          $('#uploader_placeholder').text('Please Upload MP4 Files')
+          $('#file-1').attr('accept', 'video/mp4,video/webm')
+      } else if(val === 'audio') {
+          $('#file-1').attr('accept', 'audio/mp3,audio/webm,audio/mpeg')
+          $('#uploader_placeholder').text('Please Upload MP3 Files')
+      } else if(val === 'pdf') {
+          $('#file-1').attr('accept', 'application/pdf')
+          $('#uploader_placeholder').text('Please Upload Pdf Files')
+      }
+      $('#uploader').removeClass('hide')
+  })
+</script>
+<div class="zoom-anim-dialog mfp-hide modal sm_modal" id="createOwnErc721">
+  <button class="modal__close md_cls" type="button"><i class="fas fa-times"></i></button>
+  <h4 class="modal-title share_link_page_h4"><%= t('collections.form.contract_detail') %></h4>
+  <div class="row">
+    <div class="col-12 col-md-12">
+      <div class="sign__group">
+        <%= hidden_field_tag 'nft_contract[owner_id]', current_user.address, class: 'nft-detail-name', disabled: true %>
+        <%= hidden_field_tag("nft_contract[address]") %>
+        <label class="sign__label" for="propertie"><%= t('collections.form.name') %></label>
+        <%= text_field_tag "nft_contract[name]", nil, class: 'sign__input', placeholder: 'Name of the Contract', required: true %>
+      </div>
+    </div>
+    <div class="col-12 col-md-12">
+      <div class="sign__group">
+        <label class="sign__label" for="propertie"><%= t('collections.form.symbol') %></label>
+        <%= text_field_tag "nft_contract[symbol]", nil, class: 'sign__input', placeholder: 'Symbol of the Contract', required: true %>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <div class="row">
+      <div class="col-md-6">
+        <button type="button" class="sign__btn btn btn-primary modal__close md_cls" data-dismiss="modal"><%= t('shared.cancel') %></button>
+      </div>
+      <div class="col-md-6">
+        <button type="submit" class="sign__btn btn btn-primary createOwnErc721Form"><%= t('collections.form.create_contract') %></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="zoom-anim-dialog mfp-hide modal sm_modal" id="deployContract">
+  <h4 class="modal-title share_link_page_h4"><%= t('collections.form.follow_steps') %></h4>
+  <div class="modal-body pl-30 pr-30">
+    <div class="row deployContract">
+      <%= render partial: 'collections/deploy_contract' %>
+    </div>
+
+    <div class="row signMsg hide">
+      <%= render partial: 'collections/sign_deploy_contract' %>
+    </div>
+  </div>
+</div>
+
+<div class="zoom-anim-dialog mfp-hide modal sm_modal" id="collectionStepModal">
+  <button class="modal__close md_cls" type="button"><i class="fas fa-times"></i></button>
+  <h4 class="modal-title share_link_page_h4"><%= t('collections.form.follow_steps') %></h4>
+  <div class="modal-body pl-30 pr-30">
+    <div class="row approveFlow">
+      <%= render partial: 'collections/approve' %>
+    </div>
+
+    <div class="row mintFlow">
+      <%= render partial: 'collections/mint' %>
+    </div>
+
+    <div class="row signFixedPrice hide">
+      <%= render partial: 'collections/sign_fixed_price' %>
+    </div>
+
+    <div class="row signLockedContent hide">
+      <%= render partial: 'collections/sign_locked_content' %>
+    </div>
+  </div>
+</div>

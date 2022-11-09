@@ -1,0 +1,24 @@
+<div class="asset-card">
+  <%= render 'feed/asset_pro_details', collection:collection %>
+  <div class="promote-feed">
+    <div class="assets_section more-images">
+      <div class="image-contain">
+        <a href="<%= collection_path(collection.address)%>" target="_blank">
+          <%= image_tag cover_url(collection), class: "img-responsive"%>
+        </a>
+      </div>
+      <div class="image-contain">
+        <a href="<%= collection_path(collection.address)%>" target="_blank">
+          <%= image_tag cover_url(collection), class: "img-responsive"%>
+          <% if collection.no_of_copies > 2 %>
+            <div class="additional-content">
+              <span>+ <%= collection.no_of_copies %></span>
+            </div>
+          <% end %>
+        </a>
+      </div>
+    </div>
+  </div>
+  <%= render 'feed/asset_detail', collection:collection %>
+  <%= render 'feed/asset_footer', collection:collection %>
+</div>

@@ -1,0 +1,114 @@
+<main class="main">
+  <% if @searching == false %>
+  <div class="container">
+    <div class="row mt-4">
+      <!-- title -->
+      <div class="col-12">
+        <div class="main__title big_title">
+          <h1>Explorer</h1>
+        </div>
+      </div>
+      <!-- end title -->
+    </div>
+    <% if @featured_collections.present? %>
+    <div class="row">
+      <% first = @featured_collections.slice(0) %>
+      <% if first.present? %>
+        <div class="col-lg-6">
+          <a href="<%= collection_path(first.address)%>" target="_blank">
+            <article class="explore_img full_box">
+              <%= image_tag cover_url(first), class: 'nft_img'%>
+              <div class="content_blck">
+                <%= image_tag first.owner.profile_image %>
+                <a href="<%= user_path(first.owner.address)%>" target="_blank">
+                  <h4>@<%= first.owner.full_name %></h4>
+                </a>
+              </div>
+            </article>
+          </a>
+        </div>
+      <% end %>
+      <div class="col-lg-6">
+        <div class="nft_flexbox">
+          <% @featured_collections.slice(1, 4).each do |collection| %>
+            <article class="explore_img">
+              <a href="<%= collection_path(collection.address)%>" target="_blank">
+                <%= image_tag cover_url(collection), class: 'nft_img'%>
+                <div class="content_blck">
+                  <%= image_tag collection.owner.profile_image %>
+                  <a href="<%= user_path(collection.owner.address)%>" target="_blank">
+                    <h4>@<%= collection.owner.full_name %></h4>
+                  </a>
+                </div>
+              </a>
+            </article>
+          <% end %>
+        </div>
+      </div>      
+    </div>
+    <% end %>
+  </div>
+  <div class="container">
+    <div class="row mt-4">
+      <!-- title -->
+      <div class="col-12">
+        <div class="main__title main__title--page">
+          <h1>Viral</h1>
+        </div>
+      </div>
+      <!-- end title -->
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div id="viral-carousel" class="owl-carousel owl-theme">
+            <% if @collections.present? %>
+                <% @collections.each do |collection| %>
+                    <div class="item">
+                        <div class="nft-explore">
+                            <%= render "dashboard/collection_card", collection: collection %>
+                        </div>
+                    </div>
+                <% end %>
+            <% end %>
+        </div>
+      </div>    
+    </div>
+  </div>
+  <% end %>
+
+  <div class="container">
+    <div class="row mt-4">
+      <!-- title -->
+      <div class="col-12">
+        <div class="main__title main__title--page">
+          <h1><%= t('dashboard.explore_digital_assets')%></h1>
+        </div>
+      </div>
+      <!-- end title -->
+      <div class="col-12">
+        <%= render 'category' %>
+      </div>
+    </div>
+
+    <!-- paginator -->
+    <% if @collections.present? %>
+      <div class="row">
+        <div class="col-12">
+          <div class="flickr_pagination">
+            <%= will_paginate @collections %>
+          </div>
+        </div>
+      </div>
+    <%end%>
+    <!-- end paginator -->
+  </div>
+</main>
+
+<script>
+$(".category_selected").click(function(){
+  
+  $(".category_selected").css("background",'none');
+  $(this).css("background",'var(--input-border)');
+
+});
+</script>

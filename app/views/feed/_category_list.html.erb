@@ -1,0 +1,10 @@
+<div class="category-list">
+  <p>Categories</p>
+  <ul class="listed-value">
+    <% @categories.each do |category| %>
+      <li>
+        <%= link_to category.name, search_path(category: category.name), class:'listed-anchor' %>
+       </li>
+    <% end %>
+  </ul>
+</div>

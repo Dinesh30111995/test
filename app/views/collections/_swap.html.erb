@@ -1,0 +1,47 @@
+<div class="asset__action asset__action--verified swap_asset__action">
+  <%= render partial: 'common/user_img', locals: {user: swap.requestor} %>
+  <p class="content_details">Swap Requested for <b class="max-width-180"><%= swap.requestor_collection.name %> </b>
+    <%= time_ago_in_words(swap.created_at) %> ago <br>
+    by <%= link_to swap.requestor.full_name, user_path(swap.requestor.address), class:'max-width-180' %>
+  </p>
+  <% if is_collection_owner %>
+    <% collection = swap.requestor_collection %>
+    <p class="para-color execute_btn w-auto">
+      <%= link_to 'View Swap Request', 'javascript:void(0)', class: "execute-btn viewSwap ws-nowrap", collectionId: collection.address %>
+    </p>
+    <div id="swapDetail" class="zoom-anim-dialog mfp-hide modal sm_modal <%= collection.address%>">
+      <button class="modal__close md_cls" type="button"><i class="fas fa-times"></i></button>
+      <h4 class="modal-title share_link_page_h4"><%= t('collections.show.swap_btn') %></h4>
+      <% display_quantity = collection.multiple? %>
+      <p class="swap-content">
+        <!-- <span class="innertitle"> <%= t('collections.show.swap_msg') %></span> -->
+        <span class="collection-card-img">
+            <%= attachment_tag(collection) %>
+        </span>
+        <span class="frm-title">Do you want to accept the swap request of <b><%= collection.name %></b>,</span>
+        <% if display_quantity%>
+          You will get <span><span id="requestor_quantity" class="popup_quantity_input"><%= swap.requestor_quantity%></span></span> of <span><span id="requestor_total_quantity"><%= collection.owned_tokens%></span> / </span>
+
+          You will give <span><span id="owner_quantity" class="popup_quantity_input"><%= swap.owner_quantity%></span></span> of <span><span id="owner_total_quantity"><%= @collection.owned_tokens%></span></span>
+        <%else%>
+          <span><span id="requestor_total_quantity" class='hide'><%= collection.owned_tokens%></span> / </span>
+          <input type='hidden' id='requestor_quantity' value='1' />
+          <span><span id="owner_total_quantity" class='hide'><%= @collection.owned_tokens%></span></span>
+          <input type='hidden' id='owner_quantity' value='1' />
+        <%end%>
+        <input type='hidden' id='owner_contract_address' value=<%= collection.nft_contract.address%>>
+        <input type='hidden' id='owner_collection_token_id' value=<%= collection.token%>>
+
+        <span class="frm-from" data-toggle="tooltip" data-placement="top" title="<%= collection.owner.full_name %>">by
+          <%= link_to collection.owner.full_name, user_path(collection.owner.address), target: '_blank' %>
+        </span>
+      </p>
+      <div class="text-center">
+        <a href="javascript:void(0)" class="home__btn home__btn--clr rejectSwap" data-swap-id=<%=swap.id%>>Reject Swap</a>
+        <a href="javascript:void(0)" class="home__btn home__btn--clr ApproveSwap" data-swap-id=<%= swap.id%>>Approve Swap</a>
+      </div>  
+    </div>
+  <% else %>
+    <span class="stateshow"><%=swap.state%></span>
+  <% end %>
+</div>

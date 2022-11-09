@@ -1,0 +1,161 @@
+<div class="card-body">
+  <h4 class="card-title"><%= title %></h4>
+
+  <div class="form-group row">
+    <label for="example-text-input" class="col-md-2 col-form-label"><%= t("admin.categories.form.name") %></label>
+    <div class="col-md-10">
+      <%= text_field_tag 'category[name]', @category.name, class: 'form-control input-custom', placeholder: t('admin.categories.form.name'), required: true %>
+    </div>
+  </div>
+  
+  <div class="form-group row">
+    <label for="example-text-input" class="col-md-2 col-form-label"><%= t("admin.categories.form.name") %></label>
+    <div class="col-md-10">
+      <div class="codrops-header">
+        <div class="box">
+          <span class="placeholder" id="uploader_placeholder" style="">PNG, GIF, WEBP.</span>
+          <input accept="image/png,image/jpeg,image/gif,image/webp" type="file" name="category[attachment]" id="file-1" class="sign__file-upload create_file_upload"/>
+          <label id="choose_file_selected" for="file-1"><span><%= t('collections.form.choose_file') %></span></label>
+          <div id="imagePreviewRes">
+            <% if @category.attachment.present? %>
+              <%= image_tag  url_for(@category.attachment_with_variant(:banner)), id: 'preview_image'%>
+            <% end %>
+          </div>
+          <div class="close-preview-button" id="close-preview-button">
+            <span>X</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-md-2">
+      <label for="example-text-input"><%= t("admin.categories.form.is_active") %></label>
+    </div>
+    <div class="col-md-10">
+      <%= radio_button_tag("category[is_active]", "true", category.is_active) %>
+      <label for="category_is_active_true">yes</label>
+      <%= radio_button_tag("category[is_active]", "false", !category.is_active) %>
+      <label for="category_is_active_false">no</label>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="example-number-input" class="col-md-2 col-form-label"></label>
+    <div class="col-md-10">
+      <button type="submit" class="btn btn-primary mr-1 w-md"><%= t("shared.submit") %></button>
+      <%= link_to t("shared.cancel"), admin_categories_path, class: "btn btn-secondary w-md add_btn" %>
+    </div>
+  </div>
+</div>
+<style> 
+.close-preview-button {
+    display: none;
+    padding-top: 10px;
+    background: var(--white);
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+    position: absolute;
+    top: 10px;
+    right: 26px;
+}
+</style>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#file-1").change(function(e) {
+      const file = e.currentTarget.files[0];
+      const previewSection = $('#my-preview-section');
+      const imagePreview = $('#imagePreviewRes');
+      const closePreviewBtn = $('#close-preview-button');
+      const placeholder = $('#placeholder');
+      const fileId = $('#file-1');
+      const chooseFile = $('#choose_file_selected');
+
+      const ftype = file.type;
+		  const fsize = file.size / 1024 / 1024; // in MBs
+      if (fsize > 30) {
+        return toastr.error('Invalid file size!. Must be less than 30MB');
+      }
+      const imgExt = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
+
+      if (this.files && this.files[0]) { 
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          if (imgExt.includes(ftype)) {
+            $('#preview_image').hide();
+            previewSection.css('background-image', 'url('+e.target.result +')');
+            previewSection.css({ 
+              'width': '100%', 
+              'height': '225px',
+              'border-radius': '15px', 
+              'background-size': 'cover',
+              'background-repeat': 'no-repeat',
+              'background-position': 'center',
+              'margin-left': 'auto',
+              'margin-right': 'auto',
+            });
+            previewSection.hide();
+            previewSection.fadeIn(650);
+            imagePreview.css('background-image', 'url('+e.target.result +')');
+            imagePreview.css({ 'height': '225px' });
+            imagePreview.css({ 
+              'width': '300px', 
+              'background-size': 'cover',
+              'background-repeat': 'no-repeat',
+              'background-position': 'center',
+              'margin-left': 'auto',
+              'margin-right': 'auto',
+              'border-radius': '15px'
+            });
+            closePreviewBtn.css('display', 'inline-block');
+            placeholder.fadeOut(100);
+            fileId.fadeOut(100);
+            chooseFile.fadeOut(100);
+            imagePreview.hide();
+            imagePreview.fadeIn(650);
+          }
+        }
+        reader.readAsDataURL(this.files[0]);
+      } else {
+        $('#preview_image').show();
+      }
+    });
+
+    $('#close-preview-button').click(function(){
+      var previewSection = $('#my-preview-section');
+      var imagePreview = $('#imagePreviewRes');
+      var closePreviewBtn = $('#close-preview-button');
+      var placeholder = $('#placeholder');
+      var fileId = $('#file-1');
+      var chooseFile = $('#choose_file_selected');
+      closePreview(previewSection, imagePreview, closePreviewBtn, placeholder, fileId, chooseFile);
+    });
+  });
+
+
+	function closePreview(previewSection, imagePreview, closePreviewBtn, placeholder, fileId, chooseFile) {
+		fileId.val('');
+		placeholder.fadeIn(100);
+		fileId.fadeIn(100);
+		chooseFile.fadeIn(100);
+		chooseFile.html('Choose file');
+		imagePreview.css({ 
+			'width': 'auto', 
+			'height': 'auto', 
+			'background-size': 'cover',
+			'background-repeat': 'no-repeat',
+			'background-position': 'center',
+			'margin-left': 'auto',
+			'margin-right': 'auto'
+		});
+		closePreviewBtn.css('display', 'none');
+		imagePreview.css('background-image', 'none');
+		// imagePreview.html('');
+		previewSection.css('background-image', 'none');
+		// previewSection.html('');
+    $('#preview_image').show();
+	}
+</script>

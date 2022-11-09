@@ -1,0 +1,59 @@
+<% followers = @user.followers %>
+<%= render "comments/comment_mention" %>
+<div id="one-publications" class="tab-pane fade">
+  <div class="row">
+    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+      <div class="defaulted-method mt-50">
+        <div class="followed-count-details">
+          <div class="follow-fiend-one">
+            <h4>Followers</h4>
+          </div>
+          <div class="follow-fiend-two">
+            <h5><%= followers.length %></h5>
+          </div>
+        </div>
+        <div class="img-sale-followers">
+          <div class="row">
+            <% followers.each do |user| %>
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-4 col-6">
+              <a  href="<%= user_path(user.address)%>" >
+                <div class="one-sale-followers">
+                  <div class="pond-layers">
+                    <%= image_tag user.profile_image, class:'avatar-img' %>
+                    <% if user.is_verified? %>
+                      <img src="/assets/tick.png" class="tick-img">
+                    <% end %>
+                  </div>
+                  <div class="pond-content">
+                    <h4>@<%= user.full_name %></h4>
+                  </div>
+                </div>
+              </a>
+            </div>
+            <% end %>
+<!--            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">-->
+<!--              <a href="#" class="see-all-followers">See all followers</a>-->
+<!--            </div>-->
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+      <div class="mt-50">
+        <div id="collection-list">
+          <%= render 'feed/asset_card_list' %>
+        </div>
+        <% if @collections.next_page.present? %>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="load-more-items">
+              <%= link_to "Load more", user_feed_load_more_feed_index_path(page: @collections.current_page+1, address: @user.address), id: "load-more-posts", remote: true %>
+            </div>
+          </div>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

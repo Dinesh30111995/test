@@ -1,0 +1,14 @@
+<% if @featured_collections.present? %>
+<section class="featured-section">
+    <h2 class="sec-heading">Featured NFT</h2>
+    <div id="featured-carousel" class="owl-carousel owl-theme">
+            <% @featured_collections.each do |collection| %>
+                <div class="item">
+                    <div class="nft-explore">
+                        <%= render "dashboard/collection_card", collection: collection %>
+                    </div>
+                </div>
+            <% end %>
+    </div>
+</section>
+<% end %>

@@ -1,0 +1,12 @@
+<div class="asset-card">
+  <%= render 'feed/asset_pro_details', collection:collection %>
+  <div class="promote-feed">
+    <a href="<%= collection_path(collection.address)%>" target="_blank">
+      <div class="assets_section">
+        <%= image_tag cover_url(collection), class: "img-responsive"%>
+      </div>
+    </a>
+  </div>
+  <%= render 'feed/asset_detail', collection:collection %>
+  <%= render 'feed/asset_footer', collection:collection %>
+</div>

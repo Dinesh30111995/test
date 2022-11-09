@@ -1,0 +1,9 @@
+<% if @category_collections.present? %>
+  <% category_collections.each do |collection| %>
+    <div class="col-12 col-md-6 col-lg-3">
+      <%= render "/dashboard/collection_card", collection: collection %>
+    </div>
+  <% end %>
+<% elsif params[:page] == 1 %>
+    <%= render partial: 'common/empty' %>
+<% end %>

@@ -1,0 +1,84 @@
+
+<!--<article class="top_footer">-->
+<!--  <img class="footer-right-img" src="/assets/nw_asset/footer_right.png" />-->
+<!--  <div class="container">-->
+<!--    <div class="row">-->
+<!--      <div class="col-12">-->
+<!--        <div class="partner-block">-->
+<!--          <img class="footer-img" src="/assets/nw_asset/partner/image-1.png" />-->
+<!--          <img class="footer-img" src="/assets/nw_asset/partner/image-2.png" />-->
+<!--          <img class="footer-img" src="/assets/nw_asset/partner/image-3.png" />-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</article>-->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-4">
+        <img class="img-responsive logo-img" src="/assets/dreamster.png" />
+        <p class="footer__tagline">
+          <%= t('footer.tag_line', app_name: Rails.application.credentials.config[:app_name]) %>
+        </p>
+        <div class="footer__social">
+          <a href="javascript:void(0);" target="_blank"><i class="fab fa-facebook-f"></i></a>
+          <a href="javascript:void(0);" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="javascript:void(0);" target="_blank"><i class="fab fa-twitter"></i></a>
+          <a href="javascript:void(0);" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-3 col-xl-2">
+          <h6 class="footer__title">Social Network</h6>
+          <div class="footer__nav">
+            <a href="javascript:void(0);">Documents</a>
+            <!--  <a href="javascript:void(0);">Woonkly.com</a> -->
+          </div>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-3 col-xl-2">
+          <h6 class="footer__title">Marketplace</h6>
+          <div class="footer__nav">
+            <a href="javascript:void(0);">All NFT</a>
+            <a href="javascript:void(0);">News</a>
+            <a href="javascript:void(0);">Categories</a>
+          </div>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-3 col-xl-2">
+          <h6 class="footer__title">My Profile</h6>
+          <div class="footer__nav">
+            <a href="javascript:void(0);">My Profile</a>
+            <a href="javascript:void(0);">My Collection</a>
+            <a href="javascript:void(0);">Favorities</a>
+            <a href="javascript:void(0);">Settings</a>
+          </div>
+      </div>
+
+      <div class="col-12 col-md-3 col-lg-3 col-xl-2">
+        <h6 class="footer__title">Company</h6>
+        <div class="footer__nav">
+          <a href="javascript:void(0);">Dreamster</a>
+          <!--    <a href="javascript:void(0);">Policy</a> -->
+      <!--    <a href="javascript:void(0);">Terms</a> -->
+          <!--          <a href="<%= Rails.application.credentials.config[:support_url] %>" target="_blank">Help Center</a> -->
+<!--          <a href="<%= Rails.application.credentials.config[:discussion_url] %>" target="_blank">Discussion</a> -->
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="footer__content">
+          <div class="footer__nav">
+            <!--    <a href="javascript:void(0);" target="_blank">Privacy Policy</a> -->
+            <!--    <a href="javascript:void(0);" target="_blank">Terms of Service</a> -->
+          </div>
+          <small class="footer__copyright">© 2021 <%= Rails.application.credentials.config[:app_name] %>. All Rights Reserved.</small>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

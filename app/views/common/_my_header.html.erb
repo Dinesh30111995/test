@@ -1,0 +1,98 @@
+<header class="header">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="header__content">
+          <%= render "common/nav_header" %>
+          
+          <%= render "common/search" %>
+          <%= render "common/static_nav" %>
+          <ul class="header__nav hide_1199 show_1200">
+            <li class="header__nav-item">
+              <a class="header__nav-link create-btn" href="<%= new_collection_path %>">Create</a>
+            </li>
+            <%
+=begin%>
+ <li class="header__nav-item">
+              <a class="header__nav-link" href="javascript:void(0);"><img src="/assets/litemode.png" /></a>
+            </li> 
+<%
+=end%>
+          </ul>
+          <div class="header__actions">
+            <%
+=begin%>
+ <div class="header__action show_1199 hide_1200">
+                <a class="header__nav-link" href="javascript:void(0);"><img src="/assets/litemode.png" /></a>
+            </div> 
+<%
+=end%>
+            <div class="header__action header__action--search">
+              <button class="header__action-btn" type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z"/></svg></button>
+            </div>
+
+            <div class="dropdown desktop-notification">
+              <a data-toggle="dropdown" class="view-notification" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-bell"></i>
+                <p class="notification_count"><%= Notification.unread(current_user).count %></p>
+              </a>
+              <div class="dropdown-menu header__profile-menu ">
+              <h4 class="heading">
+                <!-- <i class="fa fa-bell"></i>&nbsp; -->
+                <%= t('header.notifications') %>
+              </h4>
+                <ul class="user-notification-list"></ul>
+              </div>
+            </div>
+
+            <div class="header__action header__action--profile user_profile">
+              <a class="header__profile-btn <%= 'header__profile-btn--verified' if current_user.is_verified %>" href="javascript:void(0);" role="button" id="dropdownMenuProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <%= image_tag url_for(current_user.profile_image), class: "img-responsive" %>
+                    <div><p><%= current_user.full_name %></p>
+                      <span><%= current_balance %> <%= Rails.application.credentials.send(Current.network.short_name)[:base_coin] %></span></div>
+                    <i class="fas fa-chevron-down"></i>
+              </a>
+
+              <ul class="dropdown-menu header__profile-menu" aria-labelledby="dropdownMenuProfile">
+                <li><a href="<%=my_items_path%>"><i class="far fa-user"></i><span><%= t('header.profile') %></span></a></li>
+                <li><a href="<%=edit_user_path(current_user)%>"><i class="fas fa-cog"></i><span><%= t('header.settings') %></span></a></li>
+                <li><a href="<%= activities_path(activity_type: "activity") %>"><i class="fas fa-list"></i> <span><%= t('header.activity') %></span></a></li>
+                
+                <% if Current.network.ethereum_network? %>
+                <li>
+                  <a href="<%= moon_pay_users_path %>" data-remote="true" data-method="post">
+                    <i class="fas fa-money"></i> 
+                    <span><%= t('header.add_fund') %></span>
+                  </a>
+                </li>
+                <% end %>
+
+                <li><a href="javascript:void(0);" onclick="window.disconnect(<%= current_user.address %>)"><i class="fas fa-sign-out-alt"></i> <span><%= t('header.sign_out') %></span></a></li>
+              </ul>
+            </div>
+
+            <%#= render partial: 'common/language_select' %>
+            <div class="desktop_network">
+              <%= render partial: 'common/change_network' %>
+            </div>
+            <button class="header__btn" type="button">
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script type="text/javascript">
+    var address = "<%= current_user.address %>"
+
+    $(document).ready(function () {
+        window.loadUser(address)
+    })
+</script>

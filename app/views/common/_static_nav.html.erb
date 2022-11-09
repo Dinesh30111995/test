@@ -1,0 +1,16 @@
+ <div class="header__menu">
+    <ul class="header__nav">
+      <% if current_user.present? %>
+      <li class="header__nav-item">
+        <a class="header__nav-link" href="<%= feed_index_path %>">Feed</a>
+      </li>
+      <% end %>
+      <li class="header__nav-item">
+        <a class="header__nav-link" href="<%= search_path%>">Explore</a>
+      </li>
+      
+      <!-- <li class="header__nav-item">
+        <a class="header__nav-link" href="javascript:void(0);">Go to defifinance&nbsp;<img src="/assets/go_icon.png" /></a>
+      </li>-->
+    </ul>
+  </div>

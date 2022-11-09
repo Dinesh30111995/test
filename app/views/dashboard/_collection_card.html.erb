@@ -1,0 +1,114 @@
+<% collection_attachment = collection.get_attachment(current_user)%>
+<% reserve_drop = reserve_drop rescue nil%>
+<% edition_drop = edition_drop rescue nil%>
+<div class="card">
+  <div class="t_c">
+    <a href="<%= collection_path(collection.address)%>" class="card__cover">
+      <span class="collection-card-img" style="background-image: url('<%= cover_url(collection) %>')">
+        <%= image_tag cover_url(collection)%>
+      </span>
+    </a>
+    <% if current_user %>
+      <%= react_component("collections/like", address: current_user&.address, isLiked: collection.isLiked?(current_user&.id), collectionId: collection.id, likes_count: collection.likes.length) %>
+    <% else %>
+        <button class="card__likes heart show-login-message">
+          <i class="far fa-heart"></i>
+          <i class="fas fa-heart"></i>
+        </button>
+    <% end %>
+  </div>
+  <div class="grid-box">
+    <div class="user_list">
+      <div class="user_box">
+        <%= image_tag collection.creator.profile_image, class:'user_img' %>
+        <i class="fa fa-star" aria-hidden="true"></i>
+      </div>
+      <% if collection.creator_id != collection.owner_id %>
+        <div class="user_box">
+          <%= image_tag collection.owner.profile_image, class:'user_img' %>
+          <i class="fa fa-star" aria-hidden="true"></i>
+        </div>
+      <% end %>
+    </div>
+    <h3 class="card__title" data-toggle="tooltip" data-placement="top" title="<%= collection.title %>">
+      <a href="<%= collection_path(collection.address)%>">
+        <%= collection.title %>
+        <p class="price_val">
+          <%= number_to_kmb(collection.likes.length) %> likes
+        </p>
+      </a>
+      <% if collection.max_bid %>
+        <p class="bid_status ethval">Highest bid <b><%= collection.max_bid.value %></b></p>
+      <%else%>
+        <span class="ethval">No active Bids</span>
+      <% end %>
+    </h3>
+    <% if collection.auction_running?%>
+      <div class="timed__Auction">
+        <%= hidden_field_tag collection.address + '_collection[end_time]', collection.auction_timing, class: 'timed-action-trigger', data: { address: collection.address } %>
+        <span class="<%=collection.address+"-timedAuction-Headline"%> span-timed-fields">
+          <%= collection&.start_time&.future? ? t('collections.show.action_starts') : t('collections.show.action_ends') %>
+        </span>
+        <div class='<%=collection.address+"-timedAuction-Countdown"%> timer-format-end' >
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="card__info">
+    <ul class="asset__split d-flex align-item-center">
+      <li>
+        <div class="card__price">
+          <% if collection.instant_sale_price %>
+            <p class="bid_status instant-highest">Instant Sale Price <br> <b><%=collection.instant_sale_price%> <%= collection.instant_currency_symbol %></b></p>
+          <% elsif collection.min_bid_price_val %>
+              <p class="bid_status instant-highest">Minimum bid <br> <b><%= collection.min_bid_price_val %> <%= collection.instant_currency_symbol %></b></p>
+          <% else %>
+            <span>No active Bids</span>
+          <% end %>
+        </div>
+      </li>
+      <%if reserve_drop and (res_drop = collection.reserve_drop) and collection.is_in_reserve_drop? %>
+          <p>Time Left: <%=time_ago_in_words(res_drop.expires_in)%></p>
+      <%elsif edition_drop and (edition_drop = collection.edition_drop) and collection.is_in_edition_drop? %>
+          <p>Time Left: <%=time_ago_in_words(edition_drop.expires_in)%></p>
+      <%end%>
+    </ul>
+  </div>
+</div>
+
+<script>
+(function () {
+  var x = setInterval(function() {
+    let end_time = $('#'+'<%=collection.address.to_s%>' + '_collection_end_time').val();
+    if (end_time) {
+      var countDownDate = parseInt(end_time);
+      var now = new Date().getTime();
+      var distance = countDownDate - now;
+      // Time calculations for days, hours, minutes and seconds
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      var result =  days ? days + "d " : ""
+          result += hours ? (hours>=10? hours: '0'+hours) + "h " : "00h "
+          result += minutes ? (minutes>=10? minutes: '0'+minutes) + "m " : "00m "
+          result += seconds ? (seconds>=10? seconds: '0'+seconds) + "s " : "00s "
+      tempArray = document.getElementsByClassName('<%=collection.address.to_s%>' + "-timedAuction-Countdown");
+      for(i=0;i<tempArray.length;i++){
+        tempArray[i].innerHTML = result;
+      }
+      // If the count down is over, write some text
+      if (distance < 0) {
+        clearInterval(x);
+        tempArray = document.getElementsByClassName('<%=collection.address.to_s%>'+"-timedAuction-Countdown");
+        for(i=0;i<tempArray.length;i++){
+        tempArray[i].innerHTML = "Expired";
+      }
+        $('.'+'<%=collection.address.to_s%>' + "-timedAuction-Headline").hide();
+      }
+    }
+  }, 1000);
+}());
+</script>

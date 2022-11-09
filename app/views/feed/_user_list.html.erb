@@ -1,0 +1,7 @@
+<% if @users.length == 0 %>
+  <div>No records found</div>
+<% end %>
+
+<% @users.each do |user| %>
+  <%= render 'common/user_card', user: user %>
+<% end %>

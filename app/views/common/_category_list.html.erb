@@ -1,0 +1,67 @@
+<section class="category-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 class="sec-heading">Browse by Category</h2>
+            </div>
+        </div>
+        <div class="row">
+          <% Category.with_attached_attachment.all.each do |category| %>
+            <div class="col-sm-6 col-md-3">
+              <%= link_to search_path(category: category.name, query: params[:query]) do %>
+                <article class="article-box">
+                    <% if category.attachment.present?  %>
+                        <%= image_tag  url_for(category.attachment_with_variant(:banner)), class: "article-img"%>
+                    <% else %>
+                        <img class="article-img" src="/assets/nw_asset/bg-1.jpg" />
+                    <% end %>
+                  <h5><%= category.name %></h5>
+                </article>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="home__btns">
+                    <a href="/search" class="explore-layer-btn min-width-250" data-turbolinks="false">Explore the Markeplace</a>
+                </div>
+                <!--
+                <img class="infinity three" src="/assets/nw_asset/bubble.png" />
+                -->
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section class="category-section">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="theme-grad-box">
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-7 col-flex">
+                            <div class="content-box">
+                                <h2>Stay Informed Dreamster</h2>
+                                <p>Follow us on our official channels to be notified of new news and events.</p>
+                                <div class="footer__social social_plain">
+                                    <a href="javascript:void(0);" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="javascript:void(0);" target="_blank"><i class="fab fa-instagram"></i></a>
+                                    <a href="javascript:void(0);" target="_blank"><i class="fab fa-twitter"></i></a>
+                                    <a href="javascript:void(0);" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-5">
+                            <img class="img-responsive" src="/assets/nw_asset/setimage.png" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

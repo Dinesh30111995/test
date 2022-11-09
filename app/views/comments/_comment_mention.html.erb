@@ -1,0 +1,33 @@
+<%= javascript_include_tag 'mention' %>
+<%= javascript_include_tag 'carpet' %>
+
+<script> 
+  $(document).ready(function(){
+    window.users = data = <%= raw User.all.map(&:mention_data).compact.to_json %>;
+    window.at_who = function at_who(data)
+    {
+      $('.comment-textarea').atwho({
+        at:"@", 
+        data,
+        insertTpl: "<user value='${address}'>${atwho-at}${name}</user>",
+        displayTpl: "<li>${name}</li>",
+        // displayTpl: "<li class='mention-item' data-value='(${name},${image})'>${name}${image}</li>",
+        // callbacks: {
+        //   remoteFilter: function(query, callback) {
+        //     $.ajax({
+        //       url: `<%= mentions_feed_index_path %>`,
+        //       type: 'get',
+        //       data: {
+        //         query
+        //       },
+        //       success: function (data) {
+        //         callback(data)
+        //       }
+        //     })
+        //   }
+        // } 
+      }); 
+    }
+    window.at_who(data);
+  })
+</script>

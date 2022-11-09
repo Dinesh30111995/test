@@ -1,0 +1,40 @@
+<!-- filter -->
+<div class="col-12">
+  <div class="main__filter-wrap">
+    <% selected = params[:category].nil? && params[:query].nil? ? "selected" : '' %>
+      <ul class="category_list">
+        <li>
+          <%= link_to 'All', category_filter_path(query: params[:query]) , class: "category_selected  #{selected}" , remote: true%>
+        </li>
+        <% Category.all.each do |category| %>
+          <li>
+            <% selected = params[:category].present? && category.name == params[:category] ? "selected" : '' %>
+            <%= link_to category.name, category_filter_path(category: category.name,query: params[:query]) , class: "category_selected #{selected}" , remote: true%>
+          </li>
+        <%end%>
+        <li><%= link_to 'Newest NFT', category_filter_path(newest: true, query: params[:query]) , remote: true %></li>
+      </ul>
+  </div>
+</div>
+<!-- end filter -->
+<%= render 'collection_search_list' %>
+<% if (@collections.to_s != '' &&  params[:page_no].to_i < @collections.total_pages)%>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="load-more-items">
+        <a href="javascript:void(0)" data-page-no="2" category="" class="dashboard-load-more">Load more items</a>
+      </div>
+    </div>
+  </div>
+<% end %> 
+<style>
+    .selected{
+        background: var(--input-border);
+    }
+</style>
+<script>
+    $(document).on('ajax:success', '.category_selected', (event) => {
+        $('.category_selected').removeClass('selected')
+        $(event.target).addClass('selected')
+    })
+</script>

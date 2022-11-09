@@ -1,0 +1,21 @@
+<div class="asset-pro-details">
+  <% owner = collection.owner %>
+  <a href="<%= user_path(owner.address)%>" class="pro-profile" target="_blank">
+    <%= image_tag owner.profile_image, class:'img-responsive pro-img' %>
+    <span class="pro-profile-name">@<%= owner.full_name %></span>
+    <% if owner.is_verified? %>
+      <img src="/assets/tick.png" class="img-responsive tick-img">
+    <% end %>
+  </a>
+  <% if !current_user %>
+    <a href="#" class="follo-unfollow"><%= t('users.show.follow') %></a>
+  <% elsif current_user != owner %>
+    <%= link_to follow_unfollow_feed_index_path(id: owner.address), method: :post, remote: true, class: "follo-unfollow follow-#{owner.address}" do %>
+      <%= current_user.followees.include?(owner) ? t('users.show.unfollow') : t('users.show.follow') %>
+    <% end %>
+  <% end %>
+  <div class="timing-pro-sec">
+    <i class="fas fa-circle"></i>
+    <span><%= time_ago_in_words(collection.created_at).capitalize %></span>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+<!--Follow steps for swap NFT -- Need to change-->
+<div class="zoom-anim-dialog mfp-hide modal sm_modal" id="approveSwapModal">
+    <%= hidden_field_tag 'approve_swap_id',  '' %>
+    <button class="modal__close md_cls" type="button"><i class="fas fa-times"></i></button>
+  <h4 class="modal-title share_link_page_h4"> <%= t('shared.follow_steps') %></h4>
+    <div class="signMsg">
+      <%= render partial: 'approve_loader_swap' %>
+    </div>
+  </div>
+</div>
