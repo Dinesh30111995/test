@@ -2,7 +2,7 @@ import Web3 from 'web3';
 import { ethers } from 'ethers';
 import axios from "axios";
 
-
+window.ethers = ethers;
 const tokenURIPrefix = gon.tokenURIPrefix;
 const transferProxyContractAddress = gon.transferProxyContractAddress;
 const tokenAddress = gon.tokenAddress;
