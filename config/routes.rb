@@ -130,7 +130,7 @@ Rails.application.routes.draw do
 
   ### STATIC PAGES
   get 'about', to: 'static#about'
-  get 'dt6', to: 'static#dt6'
+  get 'airdrop', to: 'static#airdrop'
   get 'faq', to: 'static#faq'
   get 'terms_conditions', to: 'static#terms_conditions'
   get 'privacy', to: 'static#privacypolicy'
